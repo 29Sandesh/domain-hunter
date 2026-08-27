@@ -1,6 +1,8 @@
 <div align="center">
 
-# 🌐 Domen
+<img src="./public/logo.svg" alt="Domen Logo" width="80" height="80" />
+
+# Domen
 
 ### **Instant Domain Finder & Registrar Price Comparator — by [Codehtml](https://codehtml.in)**
 
@@ -83,9 +85,11 @@ Domen is built with a different philosophy:
 │   ├── api/domains/check/route.ts     # Real-time DNS check & price lookup API
 │   ├── api/domains/generate/route.ts  # Batch candidate generation & parallel scan
 │   ├── globals.css                    # Clean White & Blue styling
+│   ├── icon.svg                       # Vector browser favicon
 │   ├── layout.tsx                     # Root layout & Domen by Codehtml metadata
 │   └── page.tsx                       # Split-screen responsive dashboard
 ├── components/
+│   ├── DomenLogo.tsx                  # Custom geometric D + Dot vector logo
 │   ├── DomainCard.tsx                 # Clean domain row with 1-click buy & pricing
 │   ├── DomainSearchInput.tsx          # Single search bar & extension chips
 │   ├── Header.tsx                     # Minimal navigation with "Domen by Codehtml"

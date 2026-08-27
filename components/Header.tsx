@@ -1,7 +1,8 @@
 "use client";
 
 import React from "react";
-import { Globe, Bookmark, Github } from "lucide-react";
+import { Bookmark, Github } from "lucide-react";
+import { DomenLogo } from "./DomenLogo";
 
 interface HeaderProps {
   shortlistCount: number;
@@ -13,15 +14,13 @@ export function Header({
   onOpenShortlist,
 }: HeaderProps) {
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-slate-200 bg-white/90 backdrop-blur-md">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6">
+    <header className="sticky top-0 z-40 w-full border-b border-slate-200/80 bg-white/90 backdrop-blur-md">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-2.5 sm:px-6">
         {/* Brand Logo */}
         <div className="flex items-center gap-2.5">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600 text-white shadow-xs">
-            <Globe className="h-4 w-4" />
-          </div>
+          <DomenLogo size={34} />
           <div className="flex items-baseline gap-1.5">
-            <span className="text-base font-extrabold tracking-tight text-slate-900">
+            <span className="text-lg font-black tracking-tight text-slate-900">
               Domen
             </span>
             <span className="text-[11px] font-semibold text-slate-400">
@@ -49,7 +48,7 @@ export function Header({
             href="https://github.com/29Sandesh/domain-hunter"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 text-slate-600 hover:border-slate-300 hover:bg-slate-50 hover:text-slate-900"
+            className="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 text-slate-600 hover:border-slate-300 hover:bg-slate-50 hover:text-slate-900 transition-colors"
             title="Star Domen on GitHub"
           >
             <Github className="h-4 w-4" />
