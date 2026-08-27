@@ -11,11 +11,36 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-emerald.svg)](./LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](./CONTRIBUTING.md)
 
+[**Live Demo**](https://github.com/29Sandesh/domain-hunter) • [**Report Bug**](https://github.com/29Sandesh/domain-hunter/issues) • [**Request Feature**](https://github.com/29Sandesh/domain-hunter/issues)
+
 </div>
 
 ---
 
-## ⚡ Highlights
+## ⚡ 1-Command Instant Start
+
+You can download, install, and run **DomainHunter** with a **single command**:
+
+### 🪟 Windows (PowerShell)
+```powershell
+iwr -useb https://raw.githubusercontent.com/29Sandesh/domain-hunter/main/install.ps1 | iex
+```
+
+### 🍎 macOS & 🐧 Linux (Terminal)
+```bash
+curl -fsSL https://raw.githubusercontent.com/29Sandesh/domain-hunter/main/install.sh | bash
+```
+
+### 📦 Or using npx
+```bash
+npx degit 29Sandesh/domain-hunter domain-hunter && cd domain-hunter && npm install && npm run dev
+```
+
+Your app will automatically start at **`http://localhost:3000`**!
+
+---
+
+## ✨ Features
 
 - **⚡ Sub-50ms Real-Time DNS Checking**: Direct parallel queries to Cloudflare DNS over HTTPS (`1.1.1.1`) and Google DNS (`8.8.8.8`) — zero rate limits, zero false positives.
 - **🎯 Semantic Brand Generation**: Smart keyword thesaurus automatically derives synonyms, metaphors, and high-recall compound startup names.
@@ -26,25 +51,21 @@
 
 ---
 
-## 🚀 Quick Start
+## 🛠️ Manual Installation
 
-### Prerequisites
-- [Node.js](https://nodejs.org/) v18.18 or later
-- npm, pnpm, or yarn
+If you prefer standard Git setup:
 
-### 1. Clone the repository
 ```bash
+# 1. Clone the repository
 git clone https://github.com/29Sandesh/domain-hunter.git
+
+# 2. Enter project directory
 cd domain-hunter
-```
 
-### 2. Install dependencies
-```bash
+# 3. Install dependencies
 npm install
-```
 
-### 3. Run the development server
-```bash
+# 4. Start development server
 npm run dev
 ```
 
@@ -100,12 +121,6 @@ POST /api/domains/generate
 ## 🤝 Contributing
 
 Contributions are always welcome! Check out the [Contributing Guidelines](./CONTRIBUTING.md) to get started.
-
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'feat: Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
 
 ---
 

@@ -1,7 +1,12 @@
 {
-  "name": "domain-hunter-ai",
+  "name": "domain-hunter",
   "version": "1.0.0",
-  "private": true,
+  "description": "Discover high-recall brand domains with instant real-time DNS availability and live registrar price comparisons.",
+  "author": "Sandesh Agrawal (https://github.com/29Sandesh)",
+  "license": "MIT",
+  "bin": {
+    "domain-hunter": "./bin/cli.js"
+  },
   "scripts": {
     "dev": "next dev --port 3000",
     "build": "next build",
