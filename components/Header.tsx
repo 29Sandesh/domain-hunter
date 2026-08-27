@@ -1,0 +1,56 @@
+"use client";
+
+import React from "react";
+import { Globe, Bookmark, Github } from "lucide-react";
+
+interface HeaderProps {
+  shortlistCount: number;
+  onOpenShortlist: () => void;
+}
+
+export function Header({
+  shortlistCount,
+  onOpenShortlist,
+}: HeaderProps) {
+  return (
+    <header className="sticky top-0 z-40 w-full border-b border-slate-200 bg-white/90 backdrop-blur-md">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6">
+        {/* Brand Logo */}
+        <div className="flex items-center gap-2.5">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600 text-white shadow-xs">
+            <Globe className="h-4 w-4" />
+          </div>
+          <span className="text-base font-bold tracking-tight text-slate-900">
+            DomainHunter
+          </span>
+        </div>
+
+        {/* Action Controls */}
+        <div className="flex items-center gap-2.5">
+          <button
+            onClick={onOpenShortlist}
+            className="flex h-8 items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 text-xs font-medium text-slate-700 transition-colors hover:border-slate-300 hover:bg-slate-50"
+          >
+            <Bookmark className="h-3.5 w-3.5 text-slate-500" />
+            <span>Shortlist</span>
+            {shortlistCount > 0 && (
+              <span className="flex h-4 min-w-4 items-center justify-center rounded-full bg-blue-600 px-1 text-[10px] font-bold text-white">
+                {shortlistCount}
+              </span>
+            )}
+          </button>
+
+          <a
+            href="https://github.com/29Sandesh/domain-hunter"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 text-slate-600 hover:border-slate-300 hover:bg-slate-50 hover:text-slate-900"
+            title="Star DomainHunter on GitHub"
+          >
+            <Github className="h-4 w-4" />
+          </a>
+        </div>
+      </div>
+    </header>
+  );
+}
