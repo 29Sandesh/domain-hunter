@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import {
+  CheckCircle2,
   Bookmark,
   ExternalLink,
   Copy,
@@ -42,28 +43,28 @@ export function DomainCard({
   };
 
   return (
-    <div className="group relative flex items-center justify-between rounded-xl border border-slate-200/90 bg-white px-4 py-3 shadow-2xs transition-all duration-150 hover:border-blue-300 hover:shadow-xs">
+    <div className="group relative flex items-center justify-between rounded-xl border border-slate-200 bg-white p-3.5 transition-all duration-150 hover:border-blue-300 hover:shadow-xs">
       {/* Domain Name & Info */}
       <div className="flex items-center gap-3">
         <div>
           <div className="flex items-center gap-2">
-            <span className="text-base font-extrabold tracking-tight text-slate-900 group-hover:text-blue-600 transition-colors">
+            <span className="text-base font-bold text-slate-900 group-hover:text-blue-600 transition-colors">
               {item.name}
-              <span className="text-blue-600 font-bold">{item.tld}</span>
+              <span className="text-blue-600">{item.tld}</span>
             </span>
 
             <button
               onClick={handleCopy}
               title="Copy Domain"
-              className="rounded-md p-1 text-slate-300 transition-colors hover:bg-slate-100 hover:text-slate-700"
+              className="rounded p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-700"
             >
-              {copied ? <Check className="h-3.5 w-3.5 text-emerald-600" /> : <Copy className="h-3.5 w-3.5" />}
+              {copied ? <Check className="h-3.5 w-3.5 text-emerald-600" /> : <Copy className="h-3.5 w-3.5 text-slate-400" />}
             </button>
           </div>
 
           <div className="flex items-center gap-2 mt-0.5 text-xs">
-            <span className="inline-flex items-center gap-1.5 font-semibold text-emerald-700">
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+            <span className="flex items-center gap-1 font-semibold text-emerald-700">
+              <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600" />
               Available ({lowest.price})
             </span>
             {item.style && (
@@ -78,30 +79,30 @@ export function DomainCard({
         <button
           onClick={() => onToggleShortlist(item)}
           title={isShortlisted ? "Saved in Shortlist" : "Save Domain"}
-          className={`rounded-lg border p-2 transition-all active:scale-95 ${
+          className={`rounded-lg border p-2 transition-colors ${
             isShortlisted
-              ? "border-amber-200 bg-amber-50 text-amber-600"
+              ? "border-amber-300 bg-amber-50 text-amber-600"
               : "border-slate-200 bg-white text-slate-400 hover:border-slate-300 hover:text-slate-700"
           }`}
         >
-          <Bookmark className={`h-3.5 w-3.5 ${isShortlisted ? "fill-amber-500 text-amber-500" : ""}`} />
+          <Bookmark className={`h-4 w-4 ${isShortlisted ? "fill-amber-500 text-amber-500" : ""}`} />
         </button>
 
         <div className="relative">
-          <div className="flex items-center shadow-2xs rounded-lg overflow-hidden border border-blue-600">
+          <div className="flex items-center shadow-2xs rounded-lg overflow-hidden">
             <a
               href={lowest.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 bg-blue-600 px-3.5 py-1.5 text-xs font-bold text-white transition-all hover:bg-blue-700"
+              className="flex items-center gap-1.5 bg-blue-600 px-3.5 py-2 text-xs font-semibold text-white transition-all hover:bg-blue-700"
             >
               <span>Buy ({lowest.name})</span>
               <span className="text-[11px] font-normal text-blue-100">{lowest.price}</span>
-              <ExternalLink className="h-3 w-3 opacity-80" />
+              <ExternalLink className="h-3 w-3" />
             </a>
             <button
               onClick={() => setShowDropdown(!showDropdown)}
-              className="border-l border-blue-500 bg-blue-600 p-1.5 text-white hover:bg-blue-700 transition-colors"
+              className="border-l border-blue-500 bg-blue-600 p-2 text-white hover:bg-blue-700"
               title="Compare registrar prices"
             >
               <ChevronDown className="h-3.5 w-3.5" />
