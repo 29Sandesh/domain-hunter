@@ -11,15 +11,13 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-emerald.svg)](./LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](./CONTRIBUTING.md)
 
-[**Live Demo**](https://github.com/29Sandesh/domain-hunter) • [**Report Bug**](https://github.com/29Sandesh/domain-hunter/issues) • [**Request Feature**](https://github.com/29Sandesh/domain-hunter/issues)
-
 </div>
 
 ---
 
-## ⚡ 1-Command Instant Start
+## ⚡ 1-Command Quickstart
 
-You can download, install, and run **DomainHunter** with a **single command**:
+Run DomainHunter locally with a single terminal command:
 
 ### 🪟 Windows (PowerShell)
 ```powershell
@@ -31,12 +29,12 @@ iwr -useb https://raw.githubusercontent.com/29Sandesh/domain-hunter/main/install
 curl -fsSL https://raw.githubusercontent.com/29Sandesh/domain-hunter/main/install.sh | bash
 ```
 
-### 📦 Or using npx
+### 📦 Or via NPX
 ```bash
 npx degit 29Sandesh/domain-hunter domain-hunter && cd domain-hunter && npm install && npm run dev
 ```
 
-Your app will automatically start at **`http://localhost:3000`**!
+App will automatically start at **`http://localhost:3000`**!
 
 ---
 
@@ -51,82 +49,49 @@ Your app will automatically start at **`http://localhost:3000`**!
 
 ---
 
+## 📂 Minimal Codebase Architecture
+
+```text
+├── app/
+│   ├── api/domains/       # Sub-50ms DNS check & generation API routes
+│   ├── globals.css        # Clean minimal White & Blue styling
+│   ├── layout.tsx         # Root layout & typography
+│   └── page.tsx           # Split-screen responsive dashboard
+├── components/
+│   ├── DomainCard.tsx     # Clean domain row with 1-click buy & pricing
+│   ├── DomainSearchInput.tsx # Unified search & extension selector
+│   ├── Header.tsx         # Minimal top navigation & GitHub link
+│   └── ShortlistDrawer.tsx # Bookmark slide-out drawer
+├── lib/
+│   ├── checker.ts         # Fast DNS-over-HTTPS & registrar pricing
+│   └── generator.ts       # Semantic thesaurus & naming brain
+├── bin/cli.js             # NPX launcher script
+├── install.ps1            # Windows 1-command installer
+├── install.sh             # macOS / Linux 1-command installer
+└── package.json           # Minimal dependencies
+```
+
+---
+
 ## 🛠️ Manual Installation
 
-If you prefer standard Git setup:
-
 ```bash
-# 1. Clone the repository
+# 1. Clone repository
 git clone https://github.com/29Sandesh/domain-hunter.git
 
-# 2. Enter project directory
+# 2. Enter directory & install
 cd domain-hunter
-
-# 3. Install dependencies
 npm install
 
-# 4. Start development server
+# 3. Start local server
 npm run dev
 ```
-
-Open [http://localhost:3000](http://localhost:3000) in your browser.
-
----
-
-## 🛠️ Tech Stack
-
-| Layer | Technology |
-| :--- | :--- |
-| **Framework** | [Next.js 15](https://nextjs.org/) (App Router, Server Components) |
-| **Frontend** | [React 19](https://react.dev/), [Tailwind CSS](https://tailwindcss.com/) |
-| **Icons** | [Lucide React](https://lucide.dev/) |
-| **DNS Engine** | Cloudflare DoH (`cloudflare-dns.com`), Google DoH (`dns.google`) |
-| **Type Safety** | [TypeScript](https://www.typescriptlang.org/) (Strict Mode) |
-
----
-
-## 📡 API Reference
-
-### 1. Single Domain Check
-```http
-GET /api/domains/check?domain=example.com
-```
-**Response**:
-```json
-{
-  "domain": "example.com",
-  "name": "example",
-  "tld": ".com",
-  "isAvailable": false,
-  "status": "TAKEN",
-  "nameservers": ["a.iana-servers.net", "b.iana-servers.net"],
-  "checkTimeMs": 42
-}
-```
-
-### 2. Generate & Live-Verify Domains
-```http
-POST /api/domains/generate
-```
-**Payload**:
-```json
-{
-  "description": "B2B Cold Outreach Tool",
-  "preferredTlds": [".com"]
-}
-```
-
----
-
-## 🤝 Contributing
-
-Contributions are always welcome! Check out the [Contributing Guidelines](./CONTRIBUTING.md) to get started.
 
 ---
 
 ## 📄 License
 
-Distributed under the **MIT License**. See [`LICENSE`](./LICENSE) for more information.
+Distributed under the **MIT License**. See [`LICENSE`](./LICENSE) for details.
 
 ---
 

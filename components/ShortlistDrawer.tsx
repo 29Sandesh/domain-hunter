@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { X, Bookmark, Trash2, Download, ExternalLink, Check, Copy } from "lucide-react";
 import { DomainItem } from "./DomainCard";
-import { getRegistrarLinks } from "@/lib/registrar-links";
+import { getRegistrarPricing } from "@/lib/checker";
 
 interface ShortlistDrawerProps {
   isOpen: boolean;
@@ -32,13 +32,11 @@ export function ShortlistDrawer({
 
   const handleExportCsv = () => {
     if (shortlist.length === 0) return;
-    const header = "Domain,Availability,BrandScore,Brandability,LengthGrade,Notes\n";
+    const header = "Domain,Availability,Notes\n";
     const rows = shortlist
       .map(
         (item) =>
-          `"${item.domain}","${item.isAvailable ? "AVAILABLE" : "TAKEN"}","${item.metrics.score}","${
-            item.metrics.brandability
-          }","${item.metrics.lengthGrade}","${(notes[item.domain] || "").replace(/"/g, '""')}"`
+          `"${item.domain}","${item.isAvailable ? "AVAILABLE" : "TAKEN"}","${(notes[item.domain] || "").replace(/"/g, '""')}"`
       )
       .join("\n");
 
@@ -120,7 +118,7 @@ export function ShortlistDrawer({
             </div>
           ) : (
             shortlist.map((item) => {
-              const regLinks = getRegistrarLinks(item.domain);
+              const regLinks = getRegistrarPricing(item.domain, item.tld);
               const note = notes[item.domain];
               return (
                 <div
@@ -138,9 +136,6 @@ export function ShortlistDrawer({
                         >
                           {item.isAvailable ? "AVAILABLE" : "TAKEN"}
                         </span>
-                        <span className="text-[10px] text-slate-500">
-                          Score: {item.metrics.score}/100
-                        </span>
                       </div>
                     </div>
 
@@ -152,55 +147,64 @@ export function ShortlistDrawer({
                     </button>
                   </div>
 
-                  {/* Notes Area */}
-                  {editingDomain === item.domain ? (
-                    <div className="flex gap-1.5">
-                      <input
-                        type="text"
-                        value={tempNote}
-                        onChange={(e) => setTempNote(e.target.value)}
-                        placeholder="Add quick note..."
-                        className="flex-1 rounded border border-slate-300 bg-white px-2 py-1 text-xs text-slate-900"
-                      />
-                      <button
-                        onClick={() => {
-                          onUpdateNote(item.domain, tempNote);
-                          setEditingDomain(null);
-                        }}
-                        className="rounded bg-blue-600 px-2 text-xs text-white"
-                      >
-                        Save
-                      </button>
-                    </div>
-                  ) : (
-                    <div className="flex items-center justify-between text-xs text-slate-600 bg-white rounded border border-slate-200 px-2 py-1">
-                      <span className="truncate italic text-[11px]">
-                        {note || "No notes added"}
-                      </span>
-                      <button
+                  {/* Notes box */}
+                  <div className="text-xs">
+                    {editingDomain === item.domain ? (
+                      <div className="space-y-1.5">
+                        <textarea
+                          value={tempNote}
+                          onChange={(e) => setTempNote(e.target.value)}
+                          placeholder="Add custom notes..."
+                          rows={2}
+                          className="w-full rounded-lg border border-slate-300 bg-white p-2 text-xs text-slate-900 focus:border-blue-500 focus:outline-none"
+                        />
+                        <div className="flex justify-end gap-1.5">
+                          <button
+                            onClick={() => setEditingDomain(null)}
+                            className="rounded px-2 py-1 text-[11px] text-slate-500 hover:bg-slate-200"
+                          >
+                            Cancel
+                          </button>
+                          <button
+                            onClick={() => {
+                              onUpdateNote(item.domain, tempNote);
+                              setEditingDomain(null);
+                            }}
+                            className="rounded bg-blue-600 px-2 py-1 text-[11px] font-semibold text-white hover:bg-blue-700"
+                          >
+                            Save Note
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      <div
                         onClick={() => {
                           setEditingDomain(item.domain);
                           setTempNote(note || "");
                         }}
-                        className="text-blue-600 hover:underline text-[10px]"
+                        className="cursor-pointer rounded-lg bg-white p-2 border border-slate-200/80 text-[11px] text-slate-600 hover:border-slate-300"
                       >
-                        {note ? "Edit" : "+ Note"}
-                      </button>
-                    </div>
-                  )}
+                        {note ? (
+                          <span className="italic text-slate-700">&ldquo;{note}&rdquo;</span>
+                        ) : (
+                          <span className="text-slate-400">+ Add personal note...</span>
+                        )}
+                      </div>
+                    )}
+                  </div>
 
-                  {/* Action Link */}
-                  <div className="flex justify-end pt-1">
+                  {/* Quick Registrar Link */}
+                  {item.isAvailable && regLinks[0] && (
                     <a
                       href={regLinks[0].url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-1 text-xs font-semibold text-blue-600 hover:underline"
+                      className="inline-flex items-center gap-1 text-[11px] font-semibold text-blue-600 hover:underline"
                     >
-                      <span>Buy on {regLinks[0].name}</span>
+                      <span>Buy on {regLinks[0].name} ({regLinks[0].price})</span>
                       <ExternalLink className="h-3 w-3" />
                     </a>
-                  </div>
+                  )}
                 </div>
               );
             })
