@@ -146,7 +146,7 @@ export default function DomainHunterApp() {
                 Find the perfect <span className="text-blue-600">domain</span> for your next venture.
               </h1>
               <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
-                Describe your idea or brand keywords. DomainHunter scans 100+ high-recall name combinations and checks live registrar availability in sub-seconds.
+                Describe your idea or brand keywords. Domen scans 100+ high-recall name combinations and checks live registrar availability in sub-seconds.
               </p>
             </div>
 

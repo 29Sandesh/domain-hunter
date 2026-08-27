@@ -2,17 +2,29 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "DomainHunter AI - Best Domain Finder & Real-Time Availability Engine",
+  title: "Domen — Instant Domain Finder by Codehtml",
   description:
-    "Find high-brandability domain names for your startup or venture and verify live DNS and registry availability in real time.",
+    "Find available .com, .ai, and .io domains in sub-50ms using Cloudflare DNS over HTTPS. 100% free, zero-config, with live registrar price comparisons. Built by Codehtml.",
   keywords: [
-    "domain finder",
-    "ai domain generator",
-    "domain availability checker",
-    "whois lookup",
-    "brand name generator",
-    "best domain names",
+    "Domen",
+    "Domain Finder",
+    "Domain Search",
+    "Available Domains",
+    "Codehtml",
+    "Cloudflare DNS",
+    "Namecheap",
+    "Porkbun",
+    "GoDaddy",
   ],
+  authors: [{ name: "Codehtml", url: "https://codehtml.in" }],
+  openGraph: {
+    title: "Domen — Instant Domain Finder by Codehtml",
+    description:
+      "Find available .com, .ai, and .io domains in sub-50ms using Cloudflare DNS over HTTPS. 100% free by Codehtml.",
+    url: "https://github.com/29Sandesh/domain-hunter",
+    siteName: "Domen",
+    type: "website",
+  },
 };
 
 export default function RootLayout({

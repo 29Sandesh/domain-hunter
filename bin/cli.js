@@ -1,17 +1,16 @@
 #!/usr/bin/env node
 
 const { execSync } = require("child_process");
-const fs = require("fs");
 const path = require("path");
 
-const targetDir = process.argv[2] || "domain-hunter";
+const targetDir = process.argv[2] || "domen";
 const targetPath = path.resolve(process.cwd(), targetDir);
 
-console.log(`\n🚀 Initializing DomainHunter in ./${targetDir}...\n`);
+console.log(`\n🚀 Initializing Domen by Codehtml in ./${targetDir}...\n`);
 
 try {
   // Clone repository
-  console.log("📦 Cloning repository from GitHub...");
+  console.log("📦 Cloning Domen repository from GitHub...");
   execSync(`git clone https://github.com/29Sandesh/domain-hunter.git "${targetPath}"`, {
     stdio: "inherit",
   });
@@ -23,8 +22,8 @@ try {
     stdio: "inherit",
   });
 
-  console.log("\n✨ DomainHunter is ready!");
-  console.log("\nTo start your local finder:");
+  console.log("\n✨ Domen is ready!");
+  console.log("\nTo start your local domain finder:");
   console.log(`  cd ${targetDir}`);
   console.log("  npm run dev\n");
   console.log("🌐 Open http://localhost:3000 in your browser.\n");

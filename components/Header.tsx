@@ -20,9 +20,14 @@ export function Header({
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600 text-white shadow-xs">
             <Globe className="h-4 w-4" />
           </div>
-          <span className="text-base font-bold tracking-tight text-slate-900">
-            DomainHunter
-          </span>
+          <div className="flex items-baseline gap-1.5">
+            <span className="text-base font-extrabold tracking-tight text-slate-900">
+              Domen
+            </span>
+            <span className="text-[11px] font-semibold text-slate-400">
+              by <a href="https://codehtml.in" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Codehtml</a>
+            </span>
+          </div>
         </div>
 
         {/* Action Controls */}
@@ -45,7 +50,7 @@ export function Header({
             target="_blank"
             rel="noopener noreferrer"
             className="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 text-slate-600 hover:border-slate-300 hover:bg-slate-50 hover:text-slate-900"
-            title="Star DomainHunter on GitHub"
+            title="Star Domen on GitHub"
           >
             <Github className="h-4 w-4" />
           </a>

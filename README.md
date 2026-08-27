@@ -1,8 +1,8 @@
 <div align="center">
 
-# 🌐 DomainHunter
+# 🌐 Domen
 
-### **The Open-Source, Real-Time Domain Finder & Registrar Price Comparator.**
+### **Instant Domain Finder & Registrar Price Comparator — by [Codehtml](https://codehtml.in)**
 
 Find available `.com`, `.ai`, and `.io` domains in sub-50 milliseconds using Cloudflare DNS-over-HTTPS. Zero paid APIs, zero subscriptions, zero tracking.
 
@@ -13,6 +13,7 @@ Find available `.com`, `.ai`, and `.io` domains in sub-50 milliseconds using Clo
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.7-3178C6?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-38bdf8?style=for-the-badge&logo=tailwindcss)](https://tailwindcss.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-10b981?style=for-the-badge)](./LICENSE)
+[![Built by Codehtml](https://img.shields.io/badge/Built%20By-Codehtml-blue?style=for-the-badge)](https://codehtml.in)
 
 <br />
 
@@ -26,7 +27,7 @@ Find available `.com`, `.ai`, and `.io` domains in sub-50 milliseconds using Clo
 
 ## ⚡ 1-Command Instant Start
 
-Launch **DomainHunter** locally with a single terminal command:
+Launch **Domen** locally with a single terminal command:
 
 ### 🪟 Windows (PowerShell)
 ```powershell
@@ -40,20 +41,20 @@ curl -fsSL https://raw.githubusercontent.com/29Sandesh/domain-hunter/main/instal
 
 ### 📦 Or via NPX
 ```bash
-npx degit 29Sandesh/domain-hunter domain-hunter && cd domain-hunter && npm install && npm run dev
+npx degit 29Sandesh/domain-hunter domen && cd domen && npm install && npm run dev
 ```
 
 The app will instantly launch at **`http://localhost:3000`**!
 
 ---
 
-## 🚀 Why DomainHunter?
+## 🚀 Why Domen?
 
-Most domain finders either charge expensive monthly subscriptions, bombard you with upsells, require API keys, or even **front-run your searches** (registering domains you looked up).
+Most domain search tools either charge expensive subscriptions, require OpenAI API keys, or **front-run your searches** (silently registering domains you looked up).
 
-DomainHunter is built differently:
+Domen is built with a different philosophy:
 
-| Feature | 🌐 DomainHunter | 🏢 GoDaddy / Namecheap | 🤖 Other AI Generators |
+| Feature | 🌐 Domen | 🏢 GoDaddy / Namecheap | 🤖 Other AI Generators |
 | :--- | :---: | :---: | :---: |
 | **100% Free & Open Source** | ✅ **Yes** | ❌ No | ❌ Freemium / Paid |
 | **Zero API Keys Required** | ✅ **Yes (Runs Locally)** | ❌ N/A | ❌ Needs OpenAI API Key |
@@ -82,12 +83,12 @@ DomainHunter is built differently:
 │   ├── api/domains/check/route.ts     # Real-time DNS check & price lookup API
 │   ├── api/domains/generate/route.ts  # Batch candidate generation & parallel scan
 │   ├── globals.css                    # Clean White & Blue styling
-│   ├── layout.tsx                     # Root layout
+│   ├── layout.tsx                     # Root layout & Domen by Codehtml metadata
 │   └── page.tsx                       # Split-screen responsive dashboard
 ├── components/
 │   ├── DomainCard.tsx                 # Clean domain row with 1-click buy & pricing
 │   ├── DomainSearchInput.tsx          # Single search bar & extension chips
-│   ├── Header.tsx                     # Minimal navigation & GitHub star link
+│   ├── Header.tsx                     # Minimal navigation with "Domen by Codehtml"
 │   └── ShortlistDrawer.tsx            # Slide-out saved bookmark drawer
 ├── lib/
 │   ├── checker.ts                     # Sub-50ms Cloudflare DNS & registrar pricing
@@ -104,10 +105,10 @@ DomainHunter is built differently:
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/29Sandesh/domain-hunter.git
+git clone https://github.com/29Sandesh/domain-hunter.git domen
 
 # 2. Enter directory & install dependencies
-cd domain-hunter
+cd domen
 npm install
 
 # 3. Start local development server
@@ -118,29 +119,9 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
 
-## 📡 API Reference
-
-### 1. Single Domain Availability & Price Check
-```http
-GET /api/domains/check?domain=example.com
-```
-
-### 2. Batch Domain Generation & Live DNS Scan
-```http
-POST /api/domains/generate
-```
-```json
-{
-  "description": "B2B lead generation tool",
-  "preferredTlds": [".com", ".ai"]
-}
-```
-
----
-
 ## ⭐ Star History
 
-If you found DomainHunter helpful for finding your startup's next domain, please consider giving it a star! ⭐
+If you found Domen helpful for finding your startup's next domain, please consider giving it a star! ⭐
 
 [![Star History Chart](https://api.star-history.com/svg?repos=29Sandesh/domain-hunter&type=Date)](https://star-history.com/#29Sandesh/domain-hunter&Date)
 
@@ -159,5 +140,5 @@ Distributed under the **MIT License**. See [`LICENSE`](./LICENSE) for details.
 ---
 
 <div align="center">
-Built with ❤️ by <a href="https://github.com/29Sandesh"><b>Sandesh Agrawal</b></a>
+Built with ❤️ by <a href="https://codehtml.in"><b>Codehtml</b></a> • <a href="https://github.com/29Sandesh">Sandesh Agrawal</a>
 </div>
