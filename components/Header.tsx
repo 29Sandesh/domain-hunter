@@ -1,8 +1,7 @@
 "use client";
 
 import React from "react";
-import { Bookmark, Github } from "lucide-react";
-import { DomenLogo } from "./DomenLogo";
+import { Bookmark, Github, ArrowUpRight } from "lucide-react";
 
 interface HeaderProps {
   shortlistCount: number;
@@ -15,18 +14,24 @@ export function Header({
 }: HeaderProps) {
   return (
     <header className="sticky top-0 z-40 w-full border-b border-slate-200/80 bg-white/90 backdrop-blur-md">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-2.5 sm:px-6">
-        {/* Brand Logo */}
-        <div className="flex items-center gap-2.5">
-          <DomenLogo size={34} />
-          <div className="flex items-baseline gap-1.5">
-            <span className="text-lg font-black tracking-tight text-slate-900">
-              Domen
-            </span>
-            <span className="text-[11px] font-semibold text-slate-400">
-              by <a href="https://www.linkedin.com/in/sandeshagrawal29/" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Sandesh Agrawal</a>
-            </span>
-          </div>
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6">
+        {/* Bold Brand Name (No icon) */}
+        <div className="flex items-baseline gap-2">
+          <span className="text-xl font-black tracking-tight text-slate-900">
+            Domen
+          </span>
+          <span className="text-xs font-semibold text-slate-400">
+            by{" "}
+            <a
+              href="https://www.linkedin.com/in/sandeshagrawal29/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 hover:text-blue-700 hover:underline inline-flex items-center gap-0.5"
+            >
+              Sandesh Agrawal
+              <ArrowUpRight className="h-3 w-3" />
+            </a>
+          </span>
         </div>
 
         {/* Action Controls */}
