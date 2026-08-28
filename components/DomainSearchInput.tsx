@@ -67,7 +67,7 @@ export function DomainSearchInput({
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Describe your idea or enter keywords (e.g. 'cold email outreach' or 'lead')..."
+          placeholder="Search keywords or describe what you are building..."
           className="w-full bg-transparent py-2 text-sm text-slate-900 placeholder-slate-400 focus:outline-none"
         />
         <button
