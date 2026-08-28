@@ -4,19 +4,28 @@ import React, { useState, useEffect, useMemo } from "react";
 import confetti from "canvas-confetti";
 import {
   Github,
-  Sparkles,
   ArrowUpRight,
+  Sparkles,
 } from "lucide-react";
 import { Header } from "@/components/Header";
 import { DomainSearchInput } from "@/components/DomainSearchInput";
 import { DomainCard, DomainItem } from "@/components/DomainCard";
 import { ShortlistDrawer } from "@/components/ShortlistDrawer";
 
+const SAMPLE_IDEAS = [
+  "B2B Lead Finder",
+  "Restaurant POS System",
+  "AI Voice Assistant",
+  "Cold Email Outreach",
+  "Developer Code Tools",
+];
+
 export default function DomenApp() {
   const [domainItems, setDomainItems] = useState<DomainItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
   const [lastQuery, setLastQuery] = useState("");
+  const [activeQuery, setActiveQuery] = useState("");
 
   // Shortlist state
   const [isShortlistOpen, setIsShortlistOpen] = useState(false);
@@ -75,6 +84,7 @@ export default function DomenApp() {
     setIsLoading(true);
     setHasSearched(true);
     setLastQuery(params.description);
+    setActiveQuery(params.description);
 
     try {
       const res = await fetch("/api/domains/generate", {
@@ -172,7 +182,11 @@ export default function DomenApp() {
             
             {/* Search Input Card */}
             <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm space-y-3">
-              <DomainSearchInput onSearch={handleSearch} isLoading={isLoading} />
+              <DomainSearchInput
+                onSearch={handleSearch}
+                isLoading={isLoading}
+                initialQuery={activeQuery}
+              />
             </div>
 
             {/* Results Section */}
@@ -196,9 +210,9 @@ export default function DomenApp() {
 
                 {availableItems.length === 0 ? (
                   <div className="rounded-2xl border border-slate-200 bg-white p-10 text-center text-slate-500 shadow-2xs space-y-1.5">
-                    <p className="text-sm font-semibold text-slate-800">No available domains found for this keyword.</p>
+                    <p className="text-sm font-semibold text-slate-800">No short domains available for this exact query.</p>
                     <p className="text-xs text-slate-400 max-w-sm mx-auto">
-                      Try searching another keyword or selecting additional extensions (like .ai, .io, .co).
+                      Try selecting additional extensions above (.ai, .io, .co) or enter a broader concept.
                     </p>
                   </div>
                 ) : (
@@ -215,16 +229,36 @@ export default function DomenApp() {
                 )}
               </div>
             ) : (
-              /* Minimal Empty State */
-              <div className="rounded-2xl border border-dashed border-slate-200 bg-white/60 p-12 text-center text-slate-400 space-y-2.5">
-                <div className="mx-auto flex h-11 w-11 items-center justify-center rounded-2xl bg-blue-50 text-blue-600">
-                  <Sparkles className="h-5 w-5" />
-                </div>
-                <div>
-                  <p className="text-sm font-semibold text-slate-700">Ready to search</p>
-                  <p className="text-xs text-slate-400 mt-0.5">
-                    Type any keyword, brand name or startup idea in the search bar above.
+              /* Professional Discovery Card */
+              <div className="rounded-2xl border border-slate-200 bg-white p-8 shadow-xs space-y-5">
+                <div className="space-y-1.5">
+                  <h2 className="text-sm font-bold text-slate-900 tracking-tight">
+                    Domain Discovery & Intent Intelligence
+                  </h2>
+                  <p className="text-xs text-slate-500 leading-relaxed max-w-md">
+                    Enter a single keyword, brand concept, or describe your startup idea. Domen evaluates concise semantic naming formulas and queries live registry DNS zones in real time.
                   </p>
+                </div>
+
+                {/* Sample Discovery Chips */}
+                <div className="space-y-2 pt-1 border-t border-slate-100">
+                  <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
+                    Try sample ideas
+                  </span>
+                  <div className="flex flex-wrap gap-2">
+                    {SAMPLE_IDEAS.map((idea) => (
+                      <button
+                        key={idea}
+                        onClick={() => {
+                          setActiveQuery(idea);
+                          handleSearch({ description: idea, preferredTlds: [".com", ".ai"] });
+                        }}
+                        className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-medium text-slate-700 hover:border-blue-300 hover:bg-blue-50 hover:text-blue-700 transition-colors shadow-2xs text-left"
+                      >
+                        {idea}
+                      </button>
+                    ))}
+                  </div>
                 </div>
               </div>
             )}

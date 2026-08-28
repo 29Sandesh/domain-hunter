@@ -3,6 +3,7 @@ export interface GeneratedDomain {
   name: string;
   tld: string;
   style: string;
+  length: number;
   isAvailable?: boolean;
 }
 
@@ -11,50 +12,118 @@ export interface GeneratorOptions {
   preferredTlds?: string[];
 }
 
-const CATEGORY_THESAURUS: Record<string, string[]> = {
-  lead: ["prospect", "pipeline", "reach", "outbound", "client", "acquire", "funnel", "deal", "harvest", "convert", "radar", "beacon", "scout", "magnet", "sprout", "signal", "apex", "orbit", "vortex", "bloom", "harbor", "surge", "crest", "prism", "loom", "horizon", "spark"],
-  sales: ["deal", "revenue", "close", "pitch", "convert", "pipeline", "quota", "funnel", "scale", "boost", "target", "market", "trade", "profit", "summit", "peak"],
-  email: ["inbox", "mail", "send", "letter", "reach", "dispatch", "post", "courier", "relay", "pulse", "deliver", "signal", "beacon", "route"],
-  pos: ["table", "menu", "dine", "order", "bill", "kitchen", "cafe", "bistro", "chef", "food", "tab", "register", "counter", "serve", "receipt", "bite", "feast"],
-  restaurant: ["dine", "menu", "table", "food", "dish", "eats", "bistro", "kitchen", "chef", "meal", "grill", "cafe", "flavor", "plate", "snack"],
-  ai: ["neural", "agent", "mind", "intellect", "brain", "bot", "synapse", "nexus", "matrix", "cortex", "spark", "quantum", "omni", "logic", "tensor", "prompt", "model"],
-  voice: ["speak", "sound", "vocal", "sonic", "talk", "tone", "echo", "listen", "pogo", "audio", "mic", "chatter", "dialog", "voicebox"],
-  erp: ["ledger", "stock", "trade", "invoice", "vault", "balance", "audit", "tally", "inventory", "dispatch", "supply", "matrix", "count", "asset", "flow"],
-  code: ["dev", "script", "stack", "forge", "repo", "git", "syntax", "compile", "ship", "deploy", "byte", "binary", "logic", "craft", "node"],
-  scrape: ["crawler", "spider", "extract", "fetch", "harvest", "scout", "miner", "gather", "index", "radar", "sweep", "hunter"],
-  seo: ["rank", "search", "traffic", "organic", "visibility", "keyword", "index", "ladder", "climb", "beacon", "crest", "peak"],
-  realestate: ["realty", "estate", "home", "land", "plot", "nest", "haven", "dwell", "loft", "villa", "vista", "space", "brick", "roof"],
+// Concept Map: Expands situations & keywords into rich thematic vocabulary
+const DOMAIN_CONCEPTS: Record<string, { roots: string[]; actions: string[]; suffixes: string[] }> = {
+  // Sales & Leads
+  lead: {
+    roots: ["lead", "prospect", "pipeline", "funnel", "deal", "reach", "quota", "client", "buyer"],
+    actions: ["scout", "find", "reach", "hunt", "close", "pitch", "convert", "scale", "track", "boost"],
+    suffixes: ["flow", "hub", "lab", "hq", "kit", "box", "stack", "pulse", "craft", "base", "desk", "grid", "engine"]
+  },
+  sales: {
+    roots: ["sales", "deal", "revenue", "close", "pitch", "win", "target", "quota", "pipe"],
+    actions: ["close", "pitch", "convert", "scale", "boost", "drive", "hunt", "win"],
+    suffixes: ["hq", "hub", "flow", "lab", "kit", "deck", "pulse", "craft", "engine"]
+  },
+  call: {
+    roots: ["call", "dial", "talk", "voice", "line", "audio", "ring", "rep"],
+    actions: ["listen", "assist", "coach", "guide", "record", "pitch", "prompt"],
+    suffixes: ["ai", "hq", "lab", "flow", "box", "desk", "pulse", "core", "pilot"]
+  },
+  email: {
+    roots: ["mail", "inbox", "drip", "post", "letter", "reach", "relay", "send"],
+    actions: ["send", "verify", "warm", "reach", "deliver", "route", "track"],
+    suffixes: ["box", "hq", "flow", "lab", "hub", "pulse", "kit", "stack", "relay"]
+  },
+  pos: {
+    roots: ["dine", "table", "menu", "bill", "order", "food", "tab", "cafe", "bistro", "dish"],
+    actions: ["serve", "pay", "order", "dine", "taste", "print", "count", "track"],
+    suffixes: ["pos", "hq", "desk", "hub", "tap", "pass", "flow", "box", "kit"]
+  },
+  restaurant: {
+    roots: ["dine", "menu", "table", "food", "chef", "plate", "eats", "bistro", "cafe", "grill"],
+    actions: ["serve", "dine", "taste", "order", "cook", "book", "reserve"],
+    suffixes: ["app", "hq", "hub", "flow", "box", "pass", "spot", "bar"]
+  },
+  ai: {
+    roots: ["ai", "agent", "neural", "mind", "intel", "bot", "brain", "logic", "cortex", "spark"],
+    actions: ["think", "prompt", "assist", "guide", "solve", "build", "craft", "model"],
+    suffixes: ["ai", "os", "hq", "lab", "hub", "flow", "core", "grid", "matrix", "node"]
+  },
+  voice: {
+    roots: ["voice", "sound", "audio", "vocal", "sonic", "tone", "listen", "echo", "mic"],
+    actions: ["speak", "talk", "hear", "listen", "echo", "prompt", "stream"],
+    suffixes: ["ai", "lab", "box", "hub", "flow", "cast", "wave", "pulse"]
+  },
+  erp: {
+    roots: ["trade", "stock", "ledger", "asset", "tally", "vault", "item", "count", "flow", "tax"],
+    actions: ["manage", "track", "audit", "tally", "trade", "invoice", "balance"],
+    suffixes: ["erp", "one", "os", "hq", "hub", "stack", "core", "vault", "desk"]
+  },
+  crm: {
+    roots: ["client", "deal", "contact", "realty", "agent", "broker", "buyer", "team"],
+    actions: ["track", "connect", "reach", "manage", "sync", "close"],
+    suffixes: ["crm", "hq", "hub", "flow", "desk", "base", "kit", "suite"]
+  },
+  code: {
+    roots: ["code", "dev", "stack", "repo", "git", "byte", "syntax", "node", "script"],
+    actions: ["ship", "build", "craft", "deploy", "compile", "run", "test"],
+    suffixes: ["dev", "io", "lab", "kit", "hub", "box", "stack", "forge", "node"]
+  },
+  realty: {
+    roots: ["estate", "realty", "home", "land", "plot", "nest", "haven", "loft", "villa", "vista"],
+    actions: ["find", "list", "rent", "buy", "sell", "lease", "dwell"],
+    suffixes: ["hq", "hub", "desk", "space", "point", "base", "nest", "haven"]
+  }
 };
 
-const METAPHOR_NOUNS = [
-  "beacon", "sprout", "crest", "harbor", "orbit", "vortex", "bloom", "prism", "loom", "horizon",
-  "hive", "vault", "forge", "spring", "zenith", "vector", "bridge", "nexus", "pulse",
-  "craft", "wave", "matrix", "grid", "signal", "core", "catalyst", "loop", "nest", "spark", "bay"
-];
+const BRAND_PREFIXES = ["get", "go", "try", "use", "we", "nov", "pro", "zen", "omni", "sync", "swift", "prime", "bold", "pure", "true", "peak", "hyper", "meta"];
+const BRAND_SUFFIXES = ["io", "os", "hq", "ai", "lab", "hub", "box", "app", "ly", "fy", "ora", "ix", "ra", "va", "on", "up", "flow", "pilot", "craft", "wave", "sync", "snap", "core", "base", "desk", "grid", "kit", "loop"];
 
-const ACTION_VERBS = [
-  "scout", "harvest", "acquire", "spark", "hunt", "catch", "boost", "gather", "pitch", "target",
-  "trace", "build", "launch", "reach", "drive", "expand", "scale", "craft", "elevate", "stream", "track"
-];
-
-const POWER_MODIFIERS = [
-  "swift", "true", "prime", "pure", "bold", "apex", "peak", "vivid", "sharp", "clean", "hyper", "super", "next", "pro", "rapid", "bright"
-];
-
-const AFFIX_PREFIXES = ["get", "use", "try", "go", "my", "the"];
-const TECH_HUBS = ["hq", "lab", "hub", "desk", "base", "box", "zone", "suite", "station", "yard", "flow", "stack", "forge", "matrix", "loop"];
-const SUFFIX_WORDS = ["ify", "ly", "ora", "ix", "able", "ist", "ic", "wise", "verse", "way"];
-
-function cleanWord(str: string): string {
+function clean(str: string): string {
   return str.toLowerCase().trim().replace(/[^a-z0-9]/g, "");
 }
 
-function getSingularAndPlural(word: string): { singular: string; plural: string } {
-  const clean = cleanWord(word);
-  if (clean.endsWith("s") && clean.length > 3) {
-    return { singular: clean.slice(0, -1), plural: clean };
+// Smart Situation Parser
+function parseUserSituation(text: string): { keywords: string[]; thematicRoots: string[]; thematicActions: string[]; thematicSuffixes: string[] } {
+  const stopWords = new Set([
+    "i", "am", "a", "an", "the", "and", "or", "for", "with", "to", "in", "of", "on", "at", "by", "from",
+    "that", "this", "is", "are", "was", "were", "be", "being", "been", "have", "has", "had", "do", "does",
+    "did", "will", "would", "shall", "should", "can", "could", "may", "might", "must", "my", "your", "his",
+    "her", "its", "our", "their", "want", "need", "like", "making", "building", "creating", "looking", "something",
+    "tool", "app", "software", "system", "platform", "solution", "product", "service", "website", "project"
+  ]);
+
+  const rawTokens = text
+    .toLowerCase()
+    .replace(/[^a-z0-9\s]/g, " ")
+    .split(/\s+/)
+    .map(clean)
+    .filter((w) => w.length >= 2 && !stopWords.has(w));
+
+  const matchedRoots: string[] = [];
+  const matchedActions: string[] = [];
+  const matchedSuffixes: string[] = [];
+
+  for (const token of rawTokens) {
+    for (const [key, concept] of Object.entries(DOMAIN_CONCEPTS)) {
+      if (token.includes(key) || key.includes(token)) {
+        matchedRoots.push(...concept.roots);
+        matchedActions.push(...concept.actions);
+        matchedSuffixes.push(...concept.suffixes);
+      }
+    }
   }
-  return { singular: clean, plural: `${clean}s` };
+
+  const primaryKeywords = Array.from(new Set(rawTokens));
+  if (primaryKeywords.length === 0) primaryKeywords.push("flow", "stack", "cloud");
+
+  return {
+    keywords: primaryKeywords,
+    thematicRoots: Array.from(new Set(matchedRoots)),
+    thematicActions: Array.from(new Set(matchedActions)),
+    thematicSuffixes: Array.from(new Set(matchedSuffixes)),
+  };
 }
 
 export function generateDomainCandidates(options: GeneratorOptions): GeneratedDomain[] {
@@ -62,103 +131,80 @@ export function generateDomainCandidates(options: GeneratorOptions): GeneratedDo
     ? options.preferredTlds.map((t) => (t.startsWith(".") ? t.toLowerCase() : `.${t.toLowerCase()}`))
     : [".com"];
 
-  const rawTokens = (options.description || "saas")
-    .toLowerCase()
-    .replace(/[^a-z0-9\s]/g, " ")
-    .split(/\s+/)
-    .filter((w) => w.length >= 2 && !["and", "the", "for", "with", "this", "that", "from", "your", "what", "tool", "need", "generaton", "generation", "building", "looking"].includes(w));
+  const { keywords, thematicRoots, thematicActions, thematicSuffixes } = parseUserSituation(options.description || "saas");
 
-  const baseRoots: string[] = [];
-  for (const token of rawTokens) {
-    const { singular, plural } = getSingularAndPlural(token);
-    baseRoots.push(singular);
-    baseRoots.push(plural);
-  }
-
-  const semanticExpansions: string[] = [];
-  for (const root of baseRoots) {
-    for (const [catKey, syns] of Object.entries(CATEGORY_THESAURUS)) {
-      if (root.includes(catKey) || catKey.includes(root)) {
-        semanticExpansions.push(...syns);
-      }
-    }
-  }
-
-  const primaryWord = baseRoots[0] || "reach";
-  const primaryPlural = baseRoots[1] || `${primaryWord}s`;
-  const expandedRoots = Array.from(new Set([...baseRoots, ...semanticExpansions])).slice(0, 18);
+  const primary = keywords[0];
+  const roots = Array.from(new Set([primary, ...keywords.slice(1), ...thematicRoots])).slice(0, 10);
+  const actions = thematicActions.length > 0 ? thematicActions : ["get", "go", "try", "use", "sync", "pro"];
+  const suffixes = thematicSuffixes.length > 0 ? thematicSuffixes : BRAND_SUFFIXES;
 
   const candidates: GeneratedDomain[] = [];
   const seen = new Set<string>();
 
   function add(name: string, tld: string, style: string) {
     if (!targetTlds.includes(tld)) return;
-    const clean = cleanWord(name);
-    if (!clean || clean.length < 4 || clean.length > 22 || clean.endsWith("sss")) return;
-    const full = `${clean}${tld}`;
+    const cl = clean(name);
+    // Strict Length Filter: ONLY 4 to 12 characters max!
+    if (!cl || cl.length < 4 || cl.length > 12) return;
+    const full = `${cl}${tld}`;
     if (seen.has(full)) return;
     seen.add(full);
 
     candidates.push({
       domain: full,
-      name: clean,
+      name: cl,
       tld,
       style,
+      length: cl.length,
     });
   }
 
   for (const tld of targetTlds) {
-    // 1. Actions & Verbs
-    for (const verb of ACTION_VERBS) {
-      add(`${verb}${primaryPlural}`, tld, "Compound");
-      add(`${verb}${primaryWord}`, tld, "Compound");
-      add(`${verb}${primaryWord}flow`, tld, "Compound");
-      add(`${verb}${primaryWord}pro`, tld, "Compound");
-      add(`${verb}${primaryWord}hub`, tld, "Compound");
-      for (const exp of expandedRoots.slice(0, 4)) {
-        add(`${verb}${exp}pro`, tld, "Compound");
+    // 1. Short Prefix + Core Word (5-9 chars)
+    for (const pre of BRAND_PREFIXES) {
+      for (const root of roots.slice(0, 4)) {
+        add(`${pre}${root}`, tld, "Brandable Prefix");
       }
     }
 
-    // 2. Metaphors
-    for (const meta of METAPHOR_NOUNS) {
-      add(`${primaryWord}${meta}`, tld, "Compound");
-      add(`${meta}${primaryWord}`, tld, "Compound");
-      add(`${primaryWord}${meta}s`, tld, "Compound");
-      add(`${primaryWord}${meta}hq`, tld, "Tech & AI");
-      add(`${primaryWord}${meta}lab`, tld, "Tech & AI");
+    // 2. Core Word + Modern Suffix (5-9 chars)
+    for (const sfx of suffixes) {
+      for (const root of roots.slice(0, 5)) {
+        add(`${root}${sfx}`, tld, "Modern Suffix");
+      }
     }
 
-    // 3. Power Modifiers
-    for (const mod of POWER_MODIFIERS) {
-      add(`${mod}${primaryPlural}`, tld, "Affix & Action");
-      add(`${mod}${primaryWord}flow`, tld, "Affix & Action");
-      add(`${mod}${primaryWord}hq`, tld, "Affix & Action");
-      add(`${mod}${primaryWord}hub`, tld, "Affix & Action");
+    // 3. Action + Core Word (6-10 chars)
+    for (const act of actions) {
+      for (const root of roots.slice(0, 4)) {
+        add(`${act}${root}`, tld, "Action Brand");
+        add(`${root}${act}`, tld, "Action Brand");
+      }
     }
 
-    // 4. Prefixes
-    for (const pre of AFFIX_PREFIXES) {
-      add(`${pre}${primaryPlural}`, tld, "Affix & Action");
-      add(`${pre}${primaryWord}flow`, tld, "Affix & Action");
-      add(`${pre}${primaryWord}pro`, tld, "Affix & Action");
+    // 4. Coined Neologisms (5-8 chars)
+    for (const root of roots.slice(0, 3)) {
+      const shortRoot = root.length > 5 ? root.slice(0, 4) : root;
+      add(`${shortRoot}a`, tld, "Coined Brand");
+      add(`${shortRoot}o`, tld, "Coined Brand");
+      add(`${shortRoot}ix`, tld, "Coined Brand");
+      add(`${shortRoot}os`, tld, "Coined Brand");
+      add(`${shortRoot}ra`, tld, "Coined Brand");
+      add(`${shortRoot}on`, tld, "Coined Brand");
+      add(`${shortRoot}fy`, tld, "Coined Brand");
+      add(`${shortRoot}ly`, tld, "Coined Brand");
+      add(`${shortRoot}via`, tld, "Coined Brand");
     }
 
-    // 5. Tech Hubs
-    for (const hub of TECH_HUBS) {
-      add(`${primaryWord}${hub}`, tld, "Tech & AI");
-      add(`${primaryPlural}${hub}`, tld, "Tech & AI");
-    }
-
-    // 6. Suffixes
-    for (const sfx of SUFFIX_WORDS) {
-      add(`${primaryWord}${sfx}`, tld, "Brandable");
-      add(`${primaryWord}${sfx}pro`, tld, "Brandable");
-      for (const exp of expandedRoots.slice(0, 5)) {
-        add(`${exp}${sfx}`, tld, "Brandable");
+    // 5. Clean 2-Word Compound (7-11 chars)
+    for (let i = 0; i < Math.min(roots.length, 4); i++) {
+      for (let j = i + 1; j < Math.min(roots.length, 6); j++) {
+        add(`${roots[i]}${roots[j]}`, tld, "Compound");
+        add(`${roots[j]}${roots[i]}`, tld, "Compound");
       }
     }
   }
 
-  return candidates;
+  // Interleave and sort by shortest length first!
+  return candidates.sort((a, b) => a.length - b.length);
 }

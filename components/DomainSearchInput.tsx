@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Search, ArrowRight, Check } from "lucide-react";
 
 interface DomainSearchInputProps {
@@ -9,6 +9,7 @@ interface DomainSearchInputProps {
     preferredTlds: string[];
   }) => void;
   isLoading: boolean;
+  initialQuery?: string;
 }
 
 const COMMON_TLDS = [
@@ -21,9 +22,19 @@ const COMMON_TLDS = [
   { tld: ".in", label: ".in" },
 ];
 
-export function DomainSearchInput({ onSearch, isLoading }: DomainSearchInputProps) {
-  const [query, setQuery] = useState("");
-  const [selectedTlds, setSelectedTlds] = useState<string[]>([".com"]);
+export function DomainSearchInput({
+  onSearch,
+  isLoading,
+  initialQuery = "",
+}: DomainSearchInputProps) {
+  const [query, setQuery] = useState(initialQuery);
+  const [selectedTlds, setSelectedTlds] = useState<string[]>([".com", ".ai"]);
+
+  useEffect(() => {
+    if (initialQuery) {
+      setQuery(initialQuery);
+    }
+  }, [initialQuery]);
 
   const toggleTld = (tld: string) => {
     if (selectedTlds.includes(tld)) {
@@ -56,7 +67,7 @@ export function DomainSearchInput({ onSearch, isLoading }: DomainSearchInputProp
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search brand keywords or startup ideas..."
+          placeholder="Describe your idea or enter keywords (e.g. 'cold email outreach' or 'lead')..."
           className="w-full bg-transparent py-2 text-sm text-slate-900 placeholder-slate-400 focus:outline-none"
         />
         <button
