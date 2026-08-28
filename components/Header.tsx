@@ -6,16 +6,20 @@ import { Bookmark, Github, ArrowUpRight } from "lucide-react";
 interface HeaderProps {
   shortlistCount: number;
   onOpenShortlist: () => void;
+  currency: "USD" | "INR";
+  onToggleCurrency: (currency: "USD" | "INR") => void;
 }
 
 export function Header({
   shortlistCount,
   onOpenShortlist,
+  currency,
+  onToggleCurrency,
 }: HeaderProps) {
   return (
     <header className="sticky top-0 z-40 w-full border-b border-slate-200/80 bg-white/90 backdrop-blur-md">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6">
-        {/* Bold Brand Name (No icon) */}
+        {/* Bold Brand Name */}
         <div className="flex items-baseline gap-2">
           <span className="text-xl font-black tracking-tight text-slate-900">
             Domen
@@ -35,7 +39,32 @@ export function Header({
         </div>
 
         {/* Action Controls */}
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-2">
+          {/* Currency Toggle Filter */}
+          <div className="flex items-center rounded-lg border border-slate-200 bg-slate-100/80 p-0.5 text-xs font-semibold">
+            <button
+              onClick={() => onToggleCurrency("USD")}
+              className={`rounded-md px-2.5 py-1 transition-all ${
+                currency === "USD"
+                  ? "bg-white text-slate-900 shadow-2xs"
+                  : "text-slate-500 hover:text-slate-800"
+              }`}
+            >
+              USD ($)
+            </button>
+            <button
+              onClick={() => onToggleCurrency("INR")}
+              className={`rounded-md px-2.5 py-1 transition-all ${
+                currency === "INR"
+                  ? "bg-white text-slate-900 shadow-2xs"
+                  : "text-slate-500 hover:text-slate-800"
+              }`}
+            >
+              INR (₹)
+            </button>
+          </div>
+
+          {/* Shortlist Button */}
           <button
             onClick={onOpenShortlist}
             className="flex h-8 items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 text-xs font-medium text-slate-700 transition-colors hover:border-slate-300 hover:bg-slate-50"
@@ -49,6 +78,7 @@ export function Header({
             )}
           </button>
 
+          {/* GitHub Star Button */}
           <a
             href="https://github.com/29Sandesh/domain-hunter"
             target="_blank"

@@ -58,22 +58,22 @@ const REGISTRAR_PRICING: Record<string, Record<string, { price: number; badge?: 
   },
   ".dev": {
     Porkbun: { price: 12.50, badge: "Cheapest" },
-    Dynadot: { price: 12.50 },
+    Dynadot: { price: 12.00 },
     Namecheap: { price: 13.98 },
     Hostinger: { price: 14.99 },
     GoDaddy: { price: 15.99 },
   },
   ".in": {
-    Hostinger: { price: 7.99, badge: "Cheapest" },
-    Dynadot: { price: 8.00 },
-    Porkbun: { price: 8.50 },
-    Namecheap: { price: 8.98 },
-    GoDaddy: { price: 9.99 },
+    Porkbun: { price: 8.50, badge: "Cheapest" },
+    Dynadot: { price: 8.99 },
+    Namecheap: { price: 9.48 },
+    Hostinger: { price: 7.99, badge: "Popular" },
+    GoDaddy: { price: 8.99 },
   },
 };
 
 /**
- * Fast DNS-over-HTTPS resolution via Cloudflare & Google (sub-50ms)
+ * Checks if a domain is available via Cloudflare and Google DoH
  */
 export async function checkDomainAvailability(fullDomain: string): Promise<DomainCheckResult> {
   const startTime = Date.now();
@@ -86,7 +86,7 @@ export async function checkDomainAvailability(fullDomain: string): Promise<Domai
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 1600);
 
-    const cfUrl = `https://cloudflare-dns.com/dns-query?name=${encodeURIComponent(cleanDomain)}&type=NS`;
+    const cfUrl = `https://cloudflare-dns.com/dns-query?name=${encodeURIComponent(cleanDomain)}&type=A`;
     const res = await fetch(cfUrl, {
       headers: { Accept: "application/dns-json" },
       signal: controller.signal,
@@ -107,19 +107,7 @@ export async function checkDomainAvailability(fullDomain: string): Promise<Domai
           checkTimeMs: Date.now() - startTime,
         };
       }
-      if (data.Status === 0 && data.Answer && data.Answer.length > 0) {
-        const nsList = data.Answer.filter((a) => a.type === 2).map((a) => a.data.replace(/\.$/, ""));
-        return {
-          domain: cleanDomain,
-          name,
-          tld,
-          isAvailable: false,
-          status: "TAKEN",
-          nameservers: nsList,
-          checkTimeMs: Date.now() - startTime,
-        };
-      }
-      if (data.Status === 2) {
+      if (data.Status === 0 || data.Status === 2) {
         return {
           domain: cleanDomain,
           name,
@@ -139,7 +127,7 @@ export async function checkDomainAvailability(fullDomain: string): Promise<Domai
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 1600);
 
-    const googleUrl = `https://dns.google/resolve?name=${encodeURIComponent(cleanDomain)}&type=NS`;
+    const googleUrl = `https://dns.google/resolve?name=${encodeURIComponent(cleanDomain)}&type=A`;
     const res = await fetch(googleUrl, {
       headers: { Accept: "application/dns-json" },
       signal: controller.signal,
@@ -160,7 +148,7 @@ export async function checkDomainAvailability(fullDomain: string): Promise<Domai
           checkTimeMs: Date.now() - startTime,
         };
       }
-      if ((data.Status === 0 && data.Answer?.length) || data.Status === 2) {
+      if (data.Status === 0 || data.Status === 2) {
         return {
           domain: cleanDomain,
           name,
@@ -186,42 +174,54 @@ export async function checkDomainAvailability(fullDomain: string): Promise<Domai
 }
 
 /**
- * Returns registrar links and pricing comparison
+ * Returns registrar links and pricing comparison with USD and INR support
  */
-export function getRegistrarPricing(domainName: string, customTld?: string): RegistrarPrice[] {
+export function getRegistrarPricing(
+  domainName: string,
+  customTld?: string,
+  currency: "USD" | "INR" = "USD"
+): RegistrarPrice[] {
   const cleanDomain = domainName.trim().toLowerCase();
   const parts = cleanDomain.split(".");
   const tld = customTld || (parts.length > 1 ? `.${parts.slice(1).join(".")}` : ".com");
 
   const pricing = REGISTRAR_PRICING[tld] || REGISTRAR_PRICING[".com"];
 
+  const formatPrice = (usd: number) => {
+    if (currency === "INR") {
+      const inr = Math.round(usd * 86.5);
+      return `₹${inr.toLocaleString("en-IN")}/yr`;
+    }
+    return `$${usd.toFixed(2)}/yr`;
+  };
+
   return [
     {
       name: "Porkbun",
       url: `https://porkbun.com/checkout/search?q=${encodeURIComponent(cleanDomain)}`,
-      price: `$${(pricing.Porkbun?.price || 10.37).toFixed(2)}/yr`,
+      price: formatPrice(pricing.Porkbun?.price || 10.37),
       badge: pricing.Porkbun?.badge,
     },
     {
       name: "Namecheap",
       url: `https://www.namecheap.com/domains/registration/results/?domain=${encodeURIComponent(cleanDomain)}`,
-      price: `$${(pricing.Namecheap?.price || 10.28).toFixed(2)}/yr`,
+      price: formatPrice(pricing.Namecheap?.price || 10.28),
       badge: pricing.Namecheap?.badge,
     },
     {
       name: "Dynadot",
       url: `https://www.dynadot.com/domain/search.html?domain=${encodeURIComponent(cleanDomain)}`,
-      price: `$${(pricing.Dynadot?.price || 10.25).toFixed(2)}/yr`,
+      price: formatPrice(pricing.Dynadot?.price || 10.25),
     },
     {
       name: "Hostinger",
       url: `https://www.hostinger.com/domain-name-search?domain=${encodeURIComponent(cleanDomain)}`,
-      price: `$${(pricing.Hostinger?.price || 9.99).toFixed(2)}/yr`,
+      price: formatPrice(pricing.Hostinger?.price || 9.99),
     },
     {
       name: "GoDaddy",
       url: `https://www.godaddy.com/domainsearch/find?checkAvail=1&domainToCheck=${encodeURIComponent(cleanDomain)}`,
-      price: `$${(pricing.GoDaddy?.price || 12.17).toFixed(2)}/yr`,
+      price: formatPrice(pricing.GoDaddy?.price || 12.17),
     },
   ];
 }

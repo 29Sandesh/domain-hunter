@@ -16,6 +16,7 @@ export default function DomenApp() {
   const [isLoading, setIsLoading] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
   const [lastQuery, setLastQuery] = useState("");
+  const [currency, setCurrency] = useState<"USD" | "INR">("USD");
 
   // Shortlist state
   const [isShortlistOpen, setIsShortlistOpen] = useState(false);
@@ -30,6 +31,9 @@ export default function DomenApp() {
 
       const savedNotes = localStorage.getItem("domen_notes");
       if (savedNotes) setNotes(JSON.parse(savedNotes));
+
+      const savedCurrency = localStorage.getItem("domen_currency") as "USD" | "INR";
+      if (savedCurrency === "USD" || savedCurrency === "INR") setCurrency(savedCurrency);
     } catch {
       // Ignore
     }
@@ -52,6 +56,15 @@ export default function DomenApp() {
       // Ignore
     }
   }, [notes]);
+
+  const handleCurrencyChange = (newCurrency: "USD" | "INR") => {
+    setCurrency(newCurrency);
+    try {
+      localStorage.setItem("domen_currency", newCurrency);
+    } catch {
+      // Ignore
+    }
+  };
 
   const handleToggleShortlist = (item: DomainItem) => {
     const exists = shortlist.some((s) => s.domain === item.domain);
@@ -113,6 +126,8 @@ export default function DomenApp() {
       <Header
         shortlistCount={shortlist.length}
         onOpenShortlist={() => setIsShortlistOpen(true)}
+        currency={currency}
+        onToggleCurrency={handleCurrencyChange}
       />
 
       <main className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16">
@@ -211,6 +226,7 @@ export default function DomenApp() {
                         item={item}
                         isShortlisted={shortlist.some((s) => s.domain === item.domain)}
                         onToggleShortlist={handleToggleShortlist}
+                        currency={currency}
                       />
                     ))}
                   </div>
