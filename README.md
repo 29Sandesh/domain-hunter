@@ -144,5 +144,5 @@ Distributed under the **MIT License**. See [`LICENSE`](./LICENSE) for details.
 ---
 
 <div align="center">
-Built with ❤️ by <a href="https://codehtml.in"><b>Codehtml</b></a> • <a href="https://github.com/29Sandesh">Sandesh Agrawal</a>
+Built with ❤️ by <a href="https://www.linkedin.com/in/sandeshagrawal29/"><b>Sandesh Agrawal</b></a> • <a href="https://codehtml.in">Codehtml</a>
 </div>

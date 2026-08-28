@@ -122,6 +122,21 @@ export default function DomenApp() {
           {/* ================= LEFT COLUMN: CLEAN & MINIMAL ================= */}
           <div className="lg:col-span-5 lg:sticky lg:top-24 space-y-6">
             
+            {/* Big Bold DOMEN by Sandesh Agrawal Byline */}
+            <div className="text-xl sm:text-2xl font-black tracking-tight text-slate-900 flex items-baseline gap-2">
+              <span>DOMEN</span>
+              <span className="font-normal text-slate-400 text-sm sm:text-base">by</span>
+              <a
+                href="https://www.linkedin.com/in/sandeshagrawal29/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-600 hover:text-blue-700 hover:underline font-bold inline-flex items-center gap-0.5 text-base sm:text-lg"
+              >
+                Sandesh Agrawal
+                <ArrowUpRight className="h-3.5 w-3.5 text-blue-600" />
+              </a>
+            </div>
+
             {/* 1. Main Heading */}
             <h1 className="text-4xl sm:text-5xl lg:text-[52px] font-black tracking-tight text-slate-900 leading-[1.08]">
               Find the perfect <span className="text-blue-600">domain</span> for your next venture.

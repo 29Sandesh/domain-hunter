@@ -24,7 +24,7 @@ export function Header({
               Domen
             </span>
             <span className="text-[11px] font-semibold text-slate-400">
-              by <a href="https://codehtml.in" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Codehtml</a>
+              by <a href="https://www.linkedin.com/in/sandeshagrawal29/" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Sandesh Agrawal</a>
             </span>
           </div>
         </div>
